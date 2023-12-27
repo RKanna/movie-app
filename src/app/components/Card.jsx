@@ -1,9 +1,10 @@
 import Link from "next/link";
+import { motion } from "framer-motion";
 const Card = ({ movie }) => {
   const IMAGE_BASE_URL = "https://www.themoviedb.org/t/p/w220_and_h330_face";
   console.log(movie);
   return (
-    <div>
+    <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
       <Link className="text-decoration-none" href={"/movies/" + movie.id}>
         <div className="movie-card card h-100">
           <img
@@ -16,7 +17,7 @@ const Card = ({ movie }) => {
           </div>
         </div>
       </Link>
-    </div>
+    </motion.div>
   );
 };
 

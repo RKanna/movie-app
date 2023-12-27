@@ -3,6 +3,7 @@
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import Link from "next/link";
+import { motion } from "framer-motion";
 
 const Header = () => {
   const [searchContent, setSearchContent] = useState("");
@@ -17,7 +18,7 @@ const Header = () => {
   return (
     <div>
       <nav
-        className="navbar bg-dark border-bottom border-body"
+        className="navbar bg-dark-subtle border-bottom border-body"
         data-bs-theme="dark"
       >
         <div className="container">
@@ -36,9 +37,14 @@ const Header = () => {
               placeholder="Search"
               aria-label="Search"
             />
-            <button className="btn btn-primary" type="submit">
+            <motion.button
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.9 }}
+              className="btn btn-outline-primary"
+              type="submit"
+            >
               Search
-            </button>
+            </motion.button>
           </form>
         </div>
       </nav>

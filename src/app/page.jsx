@@ -6,6 +6,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { getTrendingMovies } from "@/utils/requests";
 import Card from "./components/Card";
 import LoadingSpin from "react-loading-spin";
+import { motion } from "framer-motion";
 
 const Home = () => {
   const [movies, setMovies] = useState([]);
@@ -46,13 +47,15 @@ const Home = () => {
         ))}
         <div className="container">
           <div className="col-md-12 text-center">
-            <button
+            <motion.button
               type="button"
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.9 }}
               className="btn btn-primary"
               onClick={fetchMoreMovies}
             >
               Load More
-            </button>
+            </motion.button>
           </div>
         </div>
       </div>

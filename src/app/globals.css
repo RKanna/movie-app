@@ -4,6 +4,10 @@
 .movie-card-text {
   height: 10rem;
 }
+iframe {
+  min-width: 100%;
+  min-height: 60vh;
+}
 
 @media screen and (max-width: 768px) {
   .for-mobile {
@@ -12,5 +16,12 @@
   .for-img-container {
     display: flex;
     justify-content: center;
+  }
+  .for-responsive {
+    margin-top: 1rem;
+  }
+  iframe {
+    min-width: 100%;
+    min-height: 100vh;
   }
 }

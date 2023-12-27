@@ -6,28 +6,68 @@ import {
   getSimilarMovies,
 } from "@/utils/requests";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import TrailerModal from "@/pages/TrailerModal";
 import Link from "next/link";
+import LoadingSpin from "react-loading-spin";
+import { motion } from "framer-motion";
 
-const DynamicMovieDetails = async ({ params }) => {
-  const movieDetails = await getMoviesDetails(params.id);
+const DynamicMovieDetails = ({ params }) => {
+  const [loading, setLoading] = useState(true);
   const IMAGE_BASE_URL = "https://www.themoviedb.org/t/p/w220_and_h330_face";
+  // const movieDetails = await getMoviesDetails(params.id);
+  // const crewDetails = await getCastAndCrew(params.id);
+  // const relatedMovies = await getSimilarMovies(params.id);
+  // const trailers = await getMovieTrailers(params.id);
+  // const officialTrailers = trailers.filter(
+  //   (trailer) => trailer.name === "Official Trailer"
+  // );
 
-  const crewDetails = await getCastAndCrew(params.id);
-  const relatedMovies = await getSimilarMovies(params.id);
-  console.log(crewDetails);
+  const [movieDetails, setMovieDetails] = useState(null);
+  const [crewDetails, setCrewDetails] = useState(null);
+  const [relatedMovies, setRelatedMovies] = useState(null);
+  const [trailers, setTrailers] = useState(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const movieDetailsData = await getMoviesDetails(params.id);
+        const crewDetailsData = await getCastAndCrew(params.id);
+        const relatedMoviesData = await getSimilarMovies(params.id);
+        const trailersData = await getMovieTrailers(params.id);
+
+        setMovieDetails(movieDetailsData);
+        setCrewDetails(crewDetailsData);
+        setRelatedMovies(relatedMoviesData);
+        setTrailers(trailersData);
+        setLoading(false);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, [params.id]);
+
+  if (loading) {
+    return (
+      <div className="d-flex justify-content-center mt-3 mb-3">
+        <LoadingSpin size={200} />
+      </div>
+    );
+  }
+
+  // console.log(crewDetails);
   // console.log(movieDetails);
-  const trailers = await getMovieTrailers(params.id);
 
   //for filtering official trailer only
-  const officialTrailers = trailers.filter(
-    (trailer) => trailer.name === "Official Trailer"
-  );
+
   // console.log(trailers);
   // console.log(relatedMovies);
   return (
-    <div className="my-4 mx-3">
+    <div className="sect-decription my-4 mx-3">
       <div className="d-flex align-items-center container my-3 for-mobile">
         <div className="col-3 for-img-container">
           <img
@@ -37,7 +77,7 @@ const DynamicMovieDetails = async ({ params }) => {
           />
         </div>
         <div className="mx-5">
-          <h3>{movieDetails.title}</h3>
+          <h3 className="for-responsive">{movieDetails.title}</h3>
           <div className="d-flex">
             <p className="py-1 px-2 bg-success text-white me-2 rounded">
               {movieDetails.release_date}
@@ -110,7 +150,11 @@ const DynamicMovieDetails = async ({ params }) => {
         <div className="d-flex flex-wrap gap-3 justify-content-center">
           {relatedMovies.map((relatedMovie) => {
             return (
-              <div key={relatedMovie.id}>
+              <motion.div
+                key={relatedMovie.id}
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.9 }}
+              >
                 <Link
                   className="text-decoration-none"
                   href={"/movies/" + relatedMovie.id}
@@ -126,30 +170,11 @@ const DynamicMovieDetails = async ({ params }) => {
                     </div>
                   </div>
                 </Link>
-              </div>
+              </motion.div>
             );
           })}
         </div>
       </div>
-
-      {/* <section className="container my-3">
-        {officialTrailers.map((trailer) => (
-          <div key={trailer.id}>
-            <h3>{trailer.name}</h3>
-            <p>Type: {trailer.type}</p>
-            <p>Published At: {trailer.published_at}</p>
-            <p>Site: {trailer.site}</p>
-            <iframe
-              width="560"
-              height="315"
-              src={`https://www.youtube.com/embed/${trailer.key}`}
-              title={trailer.name}
-              frameBorder="0"
-              allowFullScreen
-            ></iframe>
-          </div>
-        ))}
-      </section> */}
     </div>
   );
 };

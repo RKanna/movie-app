@@ -3,13 +3,26 @@ import { useState, useEffect } from "react";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import { getMovieTrailers } from "../utils/requests.js";
+import LoadingSpin from "react-loading-spin";
+import { motion } from "framer-motion";
 
 const TrailerModal = ({ params }) => {
   const [openModal, setOpenModal] = useState(false);
   const [trailers, setTrailers] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  const handleClose = () => setOpenModal(false);
-  const handleShow = () => setOpenModal(true);
+  const handleClose = () => {
+    setOpenModal(false);
+    setLoading(false);
+  };
+  const handleShow = () => {
+    setOpenModal(true);
+    if (loading) {
+      setLoading(true);
+    } else {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
     const fetchTrailers = async () => {
@@ -18,6 +31,8 @@ const TrailerModal = ({ params }) => {
         setTrailers(fetchedTrailers);
       } catch (error) {
         console.error("Error fetching trailers:", error);
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -31,16 +46,15 @@ const TrailerModal = ({ params }) => {
 
   return (
     <>
-      <Button variant="primary" onClick={handleShow}>
+      <motion.button
+        className="btn btn-primary"
+        onClick={handleShow}
+        whileHover={{ scale: 1.1 }}
+        whileTap={{ scale: 0.9 }}
+      >
         View Trailer
-      </Button>
+      </motion.button>
 
-      {/* <Modal show={openModal} onHide={handleClose} className="">
-        <Modal.Header closeButton>
-          <Modal.Title>Modal heading</Modal.Title>
-        </Modal.Header>
-        <Modal.Body> */}
-      {/* start of section */}
       <section className="container my-3">
         {officialTrailers.map((trailer) => (
           <Modal show={openModal} onHide={handleClose} className="modal-lg">
@@ -48,11 +62,12 @@ const TrailerModal = ({ params }) => {
               <Modal.Title>{trailer.name}</Modal.Title>
             </Modal.Header>
             <Modal.Body>
+              {loading && <LoadingSpin />}
               <div key={trailer.id}>
                 <p>Published At: {trailer.published_at}</p>
                 <iframe
-                  width="767"
-                  height="400"
+                  // width="767"
+                  // height="400"
                   src={`https://www.youtube.com/embed/${trailer.key}`}
                   title={trailer.name}
                   frameBorder="0"
@@ -62,24 +77,13 @@ const TrailerModal = ({ params }) => {
               </div>
             </Modal.Body>
             <Modal.Footer>
-              <Button variant="secondary" onClick={handleClose}>
+              <Button className="btn btn-danger" onClick={handleClose}>
                 Close
               </Button>
             </Modal.Footer>
           </Modal>
         ))}
       </section>
-      {/* End of section */}
-      {/* </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
-            Close
-          </Button>
-          <Button variant="primary" onClick={handleClose}>
-            Save Changes
-          </Button>
-        </Modal.Footer>
-      </Modal> */}
     </>
   );
 };
