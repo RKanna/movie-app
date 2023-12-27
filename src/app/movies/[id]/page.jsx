@@ -8,6 +8,7 @@ import {
 import "bootstrap/dist/css/bootstrap.min.css";
 import { useState } from "react";
 import TrailerModal from "@/pages/TrailerModal";
+import Link from "next/link";
 
 const DynamicMovieDetails = async ({ params }) => {
   const movieDetails = await getMoviesDetails(params.id);
@@ -24,7 +25,7 @@ const DynamicMovieDetails = async ({ params }) => {
     (trailer) => trailer.name === "Official Trailer"
   );
   console.log(trailers);
-
+  console.log(relatedMovies);
   return (
     <div className="my-4 mx-3">
       <div className="d-flex align-items-center">
@@ -108,10 +109,15 @@ const DynamicMovieDetails = async ({ params }) => {
           {relatedMovies.map((relatedMovie) => {
             return (
               <div key={relatedMovie.id}>
-                <img src={IMAGE_BASE_URL + relatedMovie.poster_path} alt="" />
-                <div className="card-body d-flex flex-wrap justify-content-center align-items-center">
-                  <h5 className="card-title">{relatedMovie.title}</h5>
-                </div>
+                <Link
+                  className="text-decoration-none"
+                  href={"/movies/" + relatedMovie.id}
+                >
+                  <img src={IMAGE_BASE_URL + relatedMovie.poster_path} alt="" />
+                  <div className="card-body d-flex flex-wrap justify-content-center align-items-center">
+                    <h5 className="card-title">{relatedMovie.title}</h5>
+                  </div>
+                </Link>
               </div>
             );
           })}
