@@ -24,9 +24,28 @@ const TrailerModal = ({ params }) => {
     }
   };
 
+  // useEffect(() => {
+  //   const fetchTrailers = async () => {
+  //     try {
+  //       const fetchedTrailers = await getMovieTrailers(params.id);
+  //       setTrailers(fetchedTrailers);
+  //     } catch (error) {
+  //       console.error("Error fetching trailers:", error);
+  //     } finally {
+  //       setLoading(false);
+  //     }
+  //   };
+
+  //   fetchTrailers();
+  // }, [params.id]);
+
   useEffect(() => {
     const fetchTrailers = async () => {
       try {
+        if (!params) {
+          return;
+        }
+
         const fetchedTrailers = await getMovieTrailers(params.id);
         setTrailers(fetchedTrailers);
       } catch (error) {
@@ -37,7 +56,7 @@ const TrailerModal = ({ params }) => {
     };
 
     fetchTrailers();
-  }, [params.id]);
+  }, [params]);
 
   // for filtering official trailer only
   const officialTrailers = trailers.filter(
@@ -57,7 +76,12 @@ const TrailerModal = ({ params }) => {
 
       <section className="container my-3">
         {officialTrailers.map((trailer) => (
-          <Modal show={openModal} onHide={handleClose} className="modal-lg">
+          <Modal
+            key={trailer.id}
+            show={openModal}
+            onHide={handleClose}
+            className="modal-lg"
+          >
             <Modal.Header closeButton>
               <Modal.Title>{trailer.name}</Modal.Title>
             </Modal.Header>
@@ -66,8 +90,6 @@ const TrailerModal = ({ params }) => {
               <div key={trailer.id}>
                 <p>Published At: {trailer.published_at}</p>
                 <iframe
-                  // width="767"
-                  // height="400"
                   src={`https://www.youtube.com/embed/${trailer.key}`}
                   title={trailer.name}
                   frameBorder="0"
