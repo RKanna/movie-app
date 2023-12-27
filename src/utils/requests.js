@@ -9,7 +9,6 @@ export const getTrendingMovies = async (page) => {
     `${BASE_URL}/trending/movie/day?language=en-US&api_key=${API_KEY}&page=${page}`
   );
   const data = await res.json();
-  // PAGE_NUM++;
   return data.results;
 };
 

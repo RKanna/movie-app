@@ -41,7 +41,7 @@ const Results = ({ searchContent, movies }) => {
           </select>
         </div>
       </div>
-      <div className="d-flex flex-wrap gap-3">
+      <div className="d-flex flex-wrap gap-3 justify-content-center">
         {filteredResults.map((movie) => {
           return <Card key={movie.id} movie={movie}></Card>;
         })}

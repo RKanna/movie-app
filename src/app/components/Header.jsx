@@ -22,7 +22,7 @@ const Header = () => {
       >
         <div className="container">
           <Link href={"/"} className="navbar-brand">
-            Movie App
+            FilmWhiz
           </Link>
           <form
             onSubmit={(e) => handleSubmit(e)}

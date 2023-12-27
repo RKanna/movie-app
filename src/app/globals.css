@@ -4,3 +4,13 @@
 .movie-card-text {
   height: 10rem;
 }
+
+@media screen and (max-width: 768px) {
+  .for-mobile {
+    flex-direction: column;
+  }
+  .for-img-container {
+    display: flex;
+    justify-content: center;
+  }
+}
