@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import Link from "next/link";
 
 const Header = () => {
   const [searchContent, setSearchContent] = useState("");
@@ -20,7 +21,9 @@ const Header = () => {
         data-bs-theme="dark"
       >
         <div className="container">
-          <a className="navbar-brand">Movie App</a>
+          <Link href={"/"} className="navbar-brand">
+            Movie App
+          </Link>
           <form
             onSubmit={(e) => handleSubmit(e)}
             className="d-flex"

@@ -30,7 +30,7 @@ const Home = () => {
 
   return (
     <div className="container my-3">
-      <h1>Current Trending Movies</h1>
+      <h1 className="my-3 mb-3">Current Trending Movies</h1>
       <div className="d-flex flex-wrap gap-3">
         {movies.map((movie) => (
           <Card key={movie.id} movie={movie}></Card>

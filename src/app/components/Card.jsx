@@ -5,17 +5,14 @@ const Card = ({ movie }) => {
   return (
     <div>
       <Link className="text-decoration-none" href={"/movies/" + movie.id}>
-        <div className="movie-card card">
+        <div className="movie-card card h-100">
           <img
             src={IMAGE_BASE_URL + movie.poster_path}
             alt=""
             className="card-img-top"
           />
-          <div className="card-body">
+          <div className="card-body d-flex justify-content-center align-items-center">
             <h5 className="card-title">{movie.title}</h5>
-            {/* <p className="movie-card-text card-text overflow-y-auto">
-              {movie.overview}
-            </p> */}
           </div>
         </div>
       </Link>

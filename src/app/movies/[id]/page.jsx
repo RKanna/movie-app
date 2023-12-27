@@ -109,7 +109,7 @@ const DynamicMovieDetails = async ({ params }) => {
             return (
               <div key={relatedMovie.id}>
                 <img src={IMAGE_BASE_URL + relatedMovie.poster_path} alt="" />
-                <div className="card-body">
+                <div className="card-body d-flex flex-wrap justify-content-center align-items-center">
                   <h5 className="card-title">{relatedMovie.title}</h5>
                 </div>
               </div>
